@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AR Drawing Sketchflow - Terms & Privacy</title>
+    <title>AR Drawing Sketchflow - Learn to Draw with AR Technology</title>
     <style>
         * {
             margin: 0;
@@ -14,28 +14,35 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background-color: #F8F9FA;
             color: #1E293B;
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        header {
-            background: white;
-            border-bottom: 1px solid #E2E8F0;
-            padding: 20px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        /* Navigation */
+        nav {
+            position: fixed;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: all 0.3s;
         }
 
-        .header-content {
+        nav.scrolled {
+            padding: 10px 0;
+        }
+
+        .nav-content {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
         }
 
         .logo-section {
@@ -45,317 +52,1103 @@
         }
 
         .logo-section img {
-            height: 50px;
+            height: 45px;
             width: auto;
-            border-radius: 10px;
         }
 
         .logo-section h1 {
-            font-size: 24px;
-            font-weight: 600;
+            font-size: 22px;
+            font-weight: 700;
             color: #1E293B;
         }
 
-        nav {
+        .nav-links {
             display: flex;
             gap: 30px;
+            align-items: center;
         }
 
-        nav a {
+        .nav-links a {
             color: #64748B;
             text-decoration: none;
             font-weight: 500;
-            padding: 8px 16px;
-            border-radius: 8px;
-            transition: all 0.3s;
-        }
-
-        nav a:hover,
-        nav a.active {
-            color: #1E293B;
-            background-color: #F1F5F9;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .content-section {
-            background: white;
-            border-radius: 12px;
-            padding: 40px;
-            margin-bottom: 30px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            display: none;
-        }
-
-        .content-section.active {
-            display: block;
-        }
-
-        .section-title {
-            font-size: 28px;
-            font-weight: 600;
-            color: #1E293B;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #E2E8F0;
-        }
-
-        .section-block {
-            margin-bottom: 30px;
-        }
-
-        .section-block h2 {
-            font-size: 18px;
-            font-weight: 600;
-            color: #1E293B;
-            margin-bottom: 12px;
-        }
-
-        .section-block p {
-            font-size: 15px;
-            color: #64748B;
-            line-height: 1.7;
-            margin-bottom: 10px;
-        }
-
-        .section-block ul {
-            list-style: none;
-            padding-left: 20px;
-            margin-top: 10px;
-        }
-
-        .section-block ul li {
-            color: #64748B;
-            margin-bottom: 8px;
-            position: relative;
-            padding-left: 20px;
-        }
-
-        .section-block ul li:before {
-            content: "•";
-            position: absolute;
-            left: 0;
-            color: #64748B;
-        }
-
-        .contact-info {
-            background: #F1F5F9;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 20px;
-        }
-
-        .contact-info a {
-            color: #3B82F6;
-            text-decoration: none;
             transition: color 0.3s;
         }
 
+        .nav-links a:hover {
+            color: #3B82F6;
+        }
+
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .mobile-menu span {
+            width: 25px;
+            height: 3px;
+            background: #1E293B;
+            transition: all 0.3s;
+        }
+
+        .mobile-menu.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .mobile-menu.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-menu.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 140px 20px 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h100v100H0z" fill="none"/><path d="M50 10a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm40 40a5 5 0 1 0 0-10 5 5 0 0 0 0 10zM10 90a5 5 0 1 0 0-10 5 5 0 0 0 0 10z" fill="rgba(255,255,255,0.1)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h2 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+
+        .download-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 30px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #667eea;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        .hero-image {
+            margin-top: 50px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-image img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 20px;
+            background: #F8F9FA;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #1E293B;
+        }
+
+        .section-title p {
+            font-size: 18px;
+            color: #64748B;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 22px;
+            margin-bottom: 12px;
+            color: #1E293B;
+        }
+
+        .feature-card p {
+            color: #64748B;
+            line-height: 1.7;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            padding: 80px 20px;
+            background: white;
+        }
+
+        .steps {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 auto 20px;
+        }
+
+        .step h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: #1E293B;
+        }
+
+        .step p {
+            color: #64748B;
+        }
+
+        /* Screenshots */
+        .screenshots {
+            padding: 80px 20px;
+            background: #F8F9FA;
+        }
+
+        .screenshots-grid {
+            max-width: 1200px;
+            margin: 50px auto 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-showcase {
+            margin-bottom: 60px;
+        }
+
+        .feature-showcase:last-child {
+            margin-bottom: 0;
+        }
+
+        .feature-showcase h3 {
+            font-size: 32px;
+            color: #1E293B;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .carousel-container {
+            position: relative;
+            max-width: 400px;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .carousel-wrapper {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            position: relative;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #667eea;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+            z-index: 10;
+        }
+
+        .carousel-btn:hover {
+            background: white;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .carousel-btn.prev {
+            left: 20px;
+        }
+
+        .carousel-btn.next {
+            right: 20px;
+        }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #CBD5E1;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .carousel-dot.active {
+            background: #667eea;
+            width: 30px;
+            border-radius: 6px;
+        }
+
+        /* About Us */
+        .about {
+            padding: 80px 20px;
+            background: white;
+        }
+
+        .about-content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .about-content h2 {
+            font-size: 42px;
+            margin-bottom: 30px;
+            color: #1E293B;
+        }
+
+        .about-content p {
+            font-size: 18px;
+            color: #64748B;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .team-values {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .value-card {
+            background: #F8F9FA;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .value-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .value-card h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #1E293B;
+        }
+
+        .value-card p {
+            color: #64748B;
+            font-size: 16px;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .contact-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact h2 {
+            font-size: 42px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .contact p {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+
+        .contact-form {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #1E293B;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #E2E8F0;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .contact-info {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .contact-info a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
         .contact-info a:hover {
-            color: #2563EB;
             text-decoration: underline;
         }
 
+        .checkbox-container {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            margin-top: 4px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .checkbox-container label {
+            color: #1E293B;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .legal-links a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .legal-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            background: #1E293B;
+            color: white;
+            padding: 40px 20px 20px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-section h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: #94A3B8;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #334155;
+            color: #94A3B8;
+        }
+
+        .footer-bottom a {
+            color: #94A3B8;
+            text-decoration: none;
+        }
+
+        .footer-bottom a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 20px;
+            .nav-links {
+                display: none;
             }
 
-            nav {
+            .nav-links.mobile-active {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(10px);
+                padding: 20px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
                 gap: 15px;
             }
 
-            .logo-section h1 {
-                font-size: 20px;
+            .mobile-menu {
+                display: flex;
             }
 
-            .content-section {
-                padding: 25px;
+            .hero h2 {
+                font-size: 32px;
             }
 
-            .section-title {
-                font-size: 24px;
+            .hero p {
+                font-size: 18px;
+            }
+
+            .section-title h2 {
+                font-size: 32px;
+            }
+
+            .download-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
             }
         }
     </style>
 </head>
 
 <body>
-    <header>
-        <div class="header-content">
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-content">
             <div class="logo-section">
-                <img src="./images/ardrawlogo.png" alt="AR Drawing Sketchflow Logo">
-                <h1>AR Drawing Sketchflow</h1>
+                <img src="images/ardrawlogo.png" alt="AR Drawing Sketchflow Logo">
+                <h1>Sketchflow</h1>
             </div>
-            <nav>
-                <a href="#privacy" class="nav-link active" onclick="showSection('privacy', event)">Privacy Policy</a>
-                <a href="#terms" class="nav-link" onclick="showSection('terms', event)">Terms & Conditions</a>
-            </nav>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <div class="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
-    </header>
+    </nav>
 
-    <div class="container">
-        <!-- Privacy Policy Section -->
-        <div id="privacy" class="content-section active">
-            <h1 class="section-title">📜 Privacy Policy for AR Drawing</h1>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h2>Learn to Draw Like a Pro<br>with AR Technology</h2>
+            <p>Transform your device into a powerful drawing teacher. Trace templates, use grid systems, and capture
+                your artistic journey.</p>
+            <div class="download-buttons">
+                <a href="#" class="btn btn-primary">
+                    <span>📱</span>
+                    Download on Play Store
+                </a>
+                <a href="#features" class="btn btn-secondary">
+                    <span>✨</span>
+                    Explore Features
+                </a>
+            </div>
+            <div class="hero-image">
+                <img src="images/banner.png" alt="AR Drawing Sketchflow App Preview">
+            </div>
+        </div>
+    </section>
 
-            <div class="section-block">
-                <h2>1. Introduction</h2>
-                <p>AR Drawing ("the App") respects your privacy. This Privacy Policy explains how we handle information
-                    when you use the App. We are committed to protecting your privacy and maintaining transparency.</p>
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="section-title">
+            <h2>Powerful Features for Every Artist</h2>
+            <p>Everything you need to start your drawing journey, from beginner to advanced.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📸</div>
+                <h3>Camera Overlay Tracing</h3>
+                <p>Place any image from our template library or your gallery over your camera view. Trace directly on
+                    paper while recording videos and capturing your artwork progress.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>Screen Projection Mode</h3>
+                <p>Place your drawing paper above your device screen. The image displays below, allowing you to trace
+                    naturally with perfect lighting and clarity.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>Grid Drawing System</h3>
+                <p>Master proportions and accuracy with our intelligent grid system. Perfect for learning traditional
+                    drawing techniques and improving your skills.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3>Line Art Converter</h3>
+                <p>Transform any photo from your gallery into clean line drawings. Makes complex images easy to trace
+                    and learn from.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📚</div>
+                <h3>Template Library</h3>
+                <p>Access hundreds of professionally curated templates across various categories. Favorite your
+                    preferred templates for quick access.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💾</div>
+                <h3>Works Gallery</h3>
+                <p>Save all your creations in one place. Record time-lapse videos, capture finished works, and share
+                    your progress with friends and family.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="section-title">
+            <h2>How It Works</h2>
+            <p>Start drawing in just three simple steps</p>
+        </div>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Choose Your Method</h3>
+                <p>Select from camera overlay, screen projection, or grid drawing mode based on your preference.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Pick an Image</h3>
+                <p>Browse our template library or upload your own photo. Use the line art converter for easier tracing.
+                </p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Start Creating</h3>
+                <p>Follow the guide, trace at your own pace, and save your masterpiece to your works gallery.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Screenshots -->
+    <section class="screenshots">
+        <div class="section-title">
+            <h2>See It In Action</h2>
+            <p>Explore our powerful features with real app screenshots</p>
+        </div>
+
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <!-- AR Drawing Feature -->
+            <div class="feature-showcase">
+                <h3>📸 AR Drawing</h3>
+                <div class="carousel-container" data-carousel="ar-drawing">
+                    <div class="carousel-wrapper">
+                        <div class="carousel-slide">
+                            <img src="images/arguide1.png" alt="AR Drawing Screenshot 1">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/arguide2.png" alt="AR Drawing Screenshot 2">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/arguide3.png" alt="AR Drawing Screenshot 3">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/arguide4.png" alt="AR Drawing Screenshot 4">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/arguide5.png" alt="AR Drawing Screenshot 4">
+                        </div>
+                    </div>
+                    <button class="carousel-btn prev" onclick="moveCarousel('ar-drawing', -1)">‹</button>
+                    <button class="carousel-btn next" onclick="moveCarousel('ar-drawing', 1)">›</button>
+                </div>
+                <div class="carousel-dots" data-dots="ar-drawing">
+                    <span class="carousel-dot active" onclick="goToSlide('ar-drawing', 0)"></span>
+                    <span class="carousel-dot" onclick="goToSlide('ar-drawing', 1)"></span>
+                    <span class="carousel-dot" onclick="goToSlide('ar-drawing', 2)"></span>
+                    <span class="carousel-dot" onclick="goToSlide('ar-drawing', 3)"></span>
+                    <span class="carousel-dot" onclick="goToSlide('ar-drawing', 4)"></span>
+                </div>
             </div>
 
-            <div class="section-block">
-                <h2>2. Information We Collect</h2>
-                <p>The App itself does not collect, store, or share any personal data directly. However, the App uses
-                    Google AdMob to show advertisements. AdMob may collect and use certain information automatically,
-                    such as:</p>
-                <ul>
-                    <li>Device identifiers</li>
-                    <li>Approximate location (for ad relevance)</li>
-                    <li>Ad interaction data (e.g., impressions, clicks)</li>
-                </ul>
-                <p>This information is processed by Google in accordance with their Privacy Policy.</p>
+            <!-- Screen Projection Feature -->
+            <div class="feature-showcase">
+                <h3>📱 Screen Projection</h3>
+                <div class="carousel-container" data-carousel="screen-projection">
+                    <div class="carousel-wrapper">
+                        <div class="carousel-slide">
+                            <img src="images/screenguide1.png" alt="Screen Projection Screenshot 1">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/screenguide2.png" alt="Screen Projection Screenshot 2">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/screenguide3.png" alt="Screen Projection Screenshot 3">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/screenguide4.png" alt="Screen Projection Screenshot 4">
+                        </div>
+                    </div>
+                    <button class="carousel-btn prev" onclick="moveCarousel('screen-projection', -1)">‹</button>
+                    <button class="carousel-btn next" onclick="moveCarousel('screen-projection', 1)">›</button>
+                </div>
+                <div class="carousel-dots" data-dots="screen-projection">
+                    <span class="carousel-dot active" onclick="goToSlide('screen-projection', 0)"></span>
+                    <span class="carousel-dot" onclick="goToSlide('screen-projection', 1)"></span>
+                    <span class="carousel-dot" onclick="goToSlide('screen-projection', 2)"></span>
+                    <span class="carousel-dot" onclick="goToSlide('screen-projection', 3)"></span>
+                </div>
             </div>
 
-            <div class="section-block">
-                <h2>3. Permissions Used</h2>
-                <p>The App requires the following permissions to work properly:</p>
-                <ul>
-                    <li>Camera: To capture photos and videos during drawing sessions.</li>
-                    <li>Storage (Gallery access): To save captured media and import user images.</li>
-                    <li>Internet access: To display AdMob ads.</li>
-                </ul>
-                <p>No photos, videos, or other media files are uploaded to any server. All media remains stored locally
-                    on your device.</p>
-            </div>
-
-            <div class="section-block">
-                <h2>4. Advertising (AdMob)</h2>
-                <p>We use Google AdMob to display:</p>
-                <ul>
-                    <li>Banner ads</li>
-                    <li>Interstitial ads</li>
-                    <li>Native advanced ads</li>
-                </ul>
-                <p>AdMob may use cookies or device identifiers for personalized advertising and performance tracking.
-                    You can opt out of ad personalization by visiting Google Ads Settings.</p>
-            </div>
-
-            <div class="section-block">
-                <h2>5. Children's Privacy</h2>
-                <p>AR Drawing is intended for general audiences and not directed toward children under 13. We do not
-                    knowingly collect personal information from children.</p>
-            </div>
-
-            <div class="section-block">
-                <h2>6. Data Security</h2>
-                <p>The App does not collect or store personal data, so no user information is transmitted or saved
-                    externally. All files and captured media remain on the user's device.</p>
-            </div>
-
-            <div class="section-block">
-                <h2>7. Changes to This Policy</h2>
-                <p>This Privacy Policy may be updated periodically. Any updates will appear on this page with the
-                    revised "Last updated" date.</p>
-            </div>
-
-            <div class="section-block">
-                <h2>8. Contact</h2>
-                <p>If you have questions or concerns about this Privacy Policy, please contact us using the details
-                    below.</p>
-                <div class="contact-info">
-                    <p><strong>📧 Email:</strong> <a
-                            href="mailto:ardrawingsketchflow@gmail.com">ardrawingsketchflow@gmail.com</a></p>
+            <!-- Grid Draw Feature -->
+            <div class="feature-showcase">
+                <h3>🎯 Grid Draw</h3>
+                <div class="carousel-container" data-carousel="grid-draw">
+                    <div class="carousel-wrapper">
+                        <div class="carousel-slide">
+                            <img src="images/gridguide1.png" alt="Grid Draw Screenshot 1">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/gridguide2.png" alt="Grid Draw Screenshot 2">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/gridguide3.png" alt="Grid Draw Screenshot 3">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/gridguide4.png" alt="Grid Draw Screenshot 4">
+                        </div>
+                    </div>
+                    <button class="carousel-btn prev" onclick="moveCarousel('grid-draw', -1)">‹</button>
+                    <button class="carousel-btn next" onclick="moveCarousel('grid-draw', 1)">›</button>
+                </div>
+                <div class="carousel-dots" data-dots="grid-draw">
+                    <span class="carousel-dot active" onclick="goToSlide('grid-draw', 0)"></span>
+                    <span class="carousel-dot" onclick="goToSlide('grid-draw', 1)"></span>
+                    <span class="carousel-dot" onclick="goToSlide('grid-draw', 2)"></span>
+                    <span class="carousel-dot" onclick="goToSlide('grid-draw', 3)"></span>
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- Terms & Conditions Section -->
-        <div id="terms" class="content-section">
-            <h1 class="section-title">⚙️ Terms of Use for AR Drawing</h1>
+    <!-- About Us -->
+    <section id="about" class="about">
+        <div class="about-content">
+            <h2>About Us</h2>
+            <p>We're two passionate indie developers who believe that learning to draw should be accessible, enjoyable,
+                and distraction-free. We created AR Drawing Sketchflow after experiencing the frustration of existing
+                apps flooded with intrusive ads and complicated interfaces.</p>
+            <p>Our mission is simple: provide a powerful, user-friendly drawing tool that puts creativity first. We
+                designed this app especially for children and beginners who want to learn drawing without interruptions,
+                but it's robust enough for experienced artists too.</p>
+            <p>Every feature in AR Drawing Sketchflow is crafted with care, focusing on what truly matters—helping you
+                create and learn. We keep ads minimal and non-intrusive, ensuring your drawing sessions flow naturally.
+            </p>
 
-            <div class="section-block">
-                <h2>1. Acceptance of Terms</h2>
-                <p>By downloading or using AR Drawing, you agree to comply with these Terms of Use. If you do not agree,
-                    you must discontinue using the App.</p>
-            </div>
-
-            <div class="section-block">
-                <h2>2. Use of the App</h2>
-                <p>AR Drawing is provided for personal and non-commercial use only.</p>
-                <p>Users may not copy, modify, distribute, or sell any part of the App or its included templates.</p>
-                <p>Users are responsible for ensuring that any images they upload do not violate copyrights or privacy
-                    rights.</p>
-            </div>
-
-            <div class="section-block">
-                <h2>3. Intellectual Property</h2>
-                <p>All templates, designs, and content included in AR Drawing are owned by the developer. Unauthorized
-                    reproduction or redistribution is strictly prohibited.</p>
-            </div>
-
-            <div class="section-block">
-                <h2>4. Advertising</h2>
-                <p>The App displays advertisements via Google AdMob. We are not responsible for the content, accuracy,
-                    or availability of third-party ads, or for any damages resulting from interactions with them.</p>
-            </div>
-
-            <div class="section-block">
-                <h2>5. Disclaimer of Warranties</h2>
-                <p>The App is provided "as is," without warranties of any kind. We do not guarantee continuous
-                    availability, error-free performance, or specific functionality.</p>
-            </div>
-
-            <div class="section-block">
-                <h2>6. Limitation of Liability</h2>
-                <p>In no event shall the developer be held liable for any direct, indirect, or incidental damages
-                    arising from your use of the App.</p>
-            </div>
-
-            <div class="section-block">
-                <h2>7. Changes to These Terms</h2>
-                <p>We may update these Terms periodically. The latest version will always be available within the App or
-                    on its Play Store listing.</p>
-            </div>
-
-            <div class="section-block">
-                <h2>8. Contact</h2>
-                <p>For any questions regarding these Terms or your use of AR Drawing, please reach out to us below.</p>
-                <div class="contact-info">
-                    <p><strong>📧 Email:</strong> <a
-                        href="mailto:ardrawingsketchflow@gmail.com">ardrawingsketchflow@gmail.com</a></p>
+            <div class="team-values">
+                <div class="value-card">
+                    <div class="value-icon">🎯</div>
+                    <h3>User-First Design</h3>
+                    <p>Every decision prioritizes your creative experience</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">🚫</div>
+                    <h3>Minimal Ads</h3>
+                    <p>No interruptions during your drawing sessions</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">❤️</div>
+                    <h3>Made with Love</h3>
+                    <p>Built by artists, for artists of all skill levels</p>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="contact-container">
+            <h2>Get In Touch</h2>
+            <p>Have questions, suggestions, or just want to say hi? We'd love to hear from you!</p>
+
+            <form class="contact-form" action="https://formspree.io/f/meovgwwe" method="POST">
+                <!-- Formspree Configuration -->
+                <input type="hidden" name="_subject" value="New Contact Form Submission - AR Drawing Sketchflow">
+
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" id="subject" name="subject" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" required></textarea>
+                </div>
+
+                <div class="checkbox-container">
+                    <input type="checkbox" id="consent" name="consent" required>
+                    <label for="consent">
+                        I agree to the
+                        <span class="legal-links">
+                            <a href="privacy-policy.html" target="_blank">Privacy Policy</a>
+                        </span>
+                        and
+                        <span class="legal-links">
+                            <a href="terms-conditions.html" target="_blank">Terms & Conditions</a>
+                        </span>
+                    </label>
+                </div>
+
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+
+            <div class="contact-info">
+                <p>Or email us directly at:</p>
+                <a href="mailto:ardrawingsketchflow@gmail.com">ardrawingsketchflow@gmail.com</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>AR Drawing Sketchflow</h3>
+                <p>Learn to draw with AR technology. Made by indie developers who care about your creative journey.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="#home">Home</a>
+                <a href="#features">Features</a>
+                <a href="#about">About Us</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <a href="privacy-policy.html">Privacy Policy</a>
+                <a href="terms-conditions.html">Terms & Conditions</a>
+            </div>
+            <div class="footer-section">
+                <h3>Connect</h3>
+                <a href="mailto:ardrawingsketchflow@gmail.com">Email Us</a>
+                <a href="#">Play Store</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 AR Drawing Sketchflow. All rights reserved. |
+                <a href="privacy-policy.html">Privacy Policy</a> |
+                <a href="terms-conditions.html">Terms & Conditions</a>
+            </p>
+        </div>
+    </footer>
 
     <script>
-        function showSection(sectionId, event) {
-            event.preventDefault();
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
 
-            // Hide all sections
-            const sections = document.querySelectorAll('.content-section');
-            sections.forEach(section => section.classList.remove('active'));
+        // Navbar scroll effect
+        window.addEventListener('scroll', function () {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
 
-            // Remove active class from all nav links
-            const navLinks = document.querySelectorAll('.nav-link');
-            navLinks.forEach(link => link.classList.remove('active'));
-
-            // Show selected section
-            document.getElementById(sectionId).classList.add('active');
-
-            // Add active class to clicked link
-            event.target.classList.add('active');
-
-            // Scroll to top
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        // Check if form was submitted
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('submitted') === 'true') {
+            alert('Thank you! Your message has been sent successfully. We\'ll get back to you soon!');
+            // Clean URL
+            window.history.replaceState({}, document.title, window.location.pathname);
         }
+
+        // Mobile menu toggle
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+
+        mobileMenu.addEventListener('click', function () {
+            this.classList.toggle('active');
+            navLinks.classList.toggle('mobile-active');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', function () {
+                mobileMenu.classList.remove('active');
+                navLinks.classList.remove('mobile-active');
+            });
+        });
+
+        // Carousel functionality
+        const carouselState = {
+            'ar-drawing': 0,
+            'screen-projection': 0,
+            'grid-draw': 0
+        };
+
+        function moveCarousel(carouselId, direction) {
+            const container = document.querySelector(`[data-carousel="${carouselId}"]`);
+            const wrapper = container.querySelector('.carousel-wrapper');
+            const slides = wrapper.querySelectorAll('.carousel-slide');
+            const dots = document.querySelectorAll(`[data-dots="${carouselId}"] .carousel-dot`);
+
+            carouselState[carouselId] += direction;
+
+            // Loop around
+            if (carouselState[carouselId] < 0) {
+                carouselState[carouselId] = slides.length - 1;
+            } else if (carouselState[carouselId] >= slides.length) {
+                carouselState[carouselId] = 0;
+            }
+
+            // Move carousel
+            wrapper.style.transform = `translateX(-${carouselState[carouselId] * 100}%)`;
+
+            // Update dots
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === carouselState[carouselId]);
+            });
+        }
+
+        function goToSlide(carouselId, slideIndex) {
+            const container = document.querySelector(`[data-carousel="${carouselId}"]`);
+            const wrapper = container.querySelector('.carousel-wrapper');
+            const dots = document.querySelectorAll(`[data-dots="${carouselId}"] .carousel-dot`);
+
+            carouselState[carouselId] = slideIndex;
+
+            // Move carousel
+            wrapper.style.transform = `translateX(-${carouselState[carouselId] * 100}%)`;
+
+            // Update dots
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === carouselState[carouselId]);
+            });
+        }
+
+        // Auto-play carousels (optional)
+        setInterval(() => {
+            Object.keys(carouselState).forEach(carouselId => {
+                moveCarousel(carouselId, 1);
+            });
+        }, 5000); // Change slide every 5 seconds
     </script>
 </body>
 
