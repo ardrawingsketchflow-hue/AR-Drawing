@@ -1,1155 +1,860 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AR Drawing Sketchflow - Learn to Draw with AR Technology</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sketchflow - Drawing Made Fun</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      :root {
+        /* Palette: Fresh & Playful */
+        --primary: #6366f1; /* Indigo */
+        --primary-hover: #4f46e5;
+        --accent: #f472b6; /* Soft Pink */
+        
+        --bg-body: #ffffff;
+        --bg-surface: #f8fafc;
+        --bg-card: #ffffff;
+        
+        --text-heading: #1e293b;
+        --text-body: #64748b;
+        
+        --radius-sm: 12px;
+        --radius-lg: 24px;
+        --radius-xl: 40px;
+        
+        --shadow-soft: 0 10px 40px -10px rgba(0,0,0,0.08);
+        --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        --shadow-button: 0 20px 25px -5px rgba(99, 102, 241, 0.3), 0 10px 10px -5px rgba(99, 102, 241, 0.1);
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            color: #1E293B;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
+        --font-heading: "Outfit", sans-serif;
+        --font-body: "Plus Jakarta Sans", sans-serif;
+      }
 
-        /* Navigation */
-        nav {
-            position: fixed;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 15px 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            transition: all 0.3s;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        nav.scrolled {
-            padding: 10px 0;
-        }
+      html {
+        scroll-behavior: smooth;
+      }
 
-        .nav-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+      body {
+        font-family: var(--font-body);
+        color: var(--text-body);
+        background-color: var(--bg-body);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      h1, h2, h3, h4 {
+        font-family: var(--font-heading);
+        color: var(--text-heading);
+        line-height: 1.2;
+      }
+
+      /* --- Animations --- */
+      @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-15px); }
+        100% { transform: translateY(0px); }
+      }
+
+      .animate-on-scroll {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+      }
+
+      .animate-on-scroll.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* --- Navbar --- */
+      nav {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        max-width: 1200px;
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(12px);
+        padding: 15px 30px;
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow-card);
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+      }
+      
+      nav.scrolled {
+        width: 95%;
+        top: 10px;
+        background: rgba(255, 255, 255, 0.95);
+      }
+
+      .logo-section {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .logo-section img {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+      }
+
+      .logo-section h1 {
+        font-size: 20px;
+        font-weight: 700;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 20px;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: var(--text-heading);
+        font-weight: 600;
+        font-size: 15px;
+        padding: 8px 16px;
+        border-radius: 20px;
+        transition: all 0.2s;
+      }
+
+      .nav-links a:hover {
+        background: var(--bg-surface);
+        color: var(--primary);
+      }
+
+      /* --- Hero --- */
+      .hero {
+        padding: 160px 20px 100px;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: radial-gradient(circle at top right, #eef2ff 0%, #ffffff 40%);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0.6;
+        z-index: 0;
+      }
+      .blob-1 { top: -10%; right: -5%; width: 500px; height: 500px; background: #e0e7ff; }
+      .blob-2 { bottom: 0%; left: -10%; width: 400px; height: 400px; background: #fce7f3; }
+
+      .hero-container {
+        max-width: 1100px;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: center;
+        z-index: 1;
+      }
+
+      .hero-text h2 {
+        font-size: clamp(48px, 5vw, 64px);
+        font-weight: 800;
+        margin-bottom: 24px;
+        letter-spacing: -1px;
+      }
+
+      .hero-text p {
+        font-size: 20px;
+        color: var(--text-body);
+        margin-bottom: 40px;
+        max-width: 480px;
+      }
+
+      /* BIG PLAY BUTTON STYLE */
+      .big-play-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 15px;
+        background: #111;
+        color: white;
+        text-decoration: none;
+        padding: 20px 40px;
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow-button);
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        width: fit-content;
+      }
+
+      .big-play-btn:hover {
+        transform: scale(1.05) translateY(-5px);
+        box-shadow: 0 25px 30px -5px rgba(0,0,0,0.2);
+        background: #000;
+      }
+
+      .big-play-btn img {
+        width: 40px;
+        height: 40px;
+      }
+
+      .btn-content {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.1;
+      }
+
+      .btn-content span:first-child {
+        font-size: 13px;
+        text-transform: uppercase;
+        opacity: 0.8;
+      }
+
+      .btn-content span:last-child {
+        font-size: 24px;
+        font-weight: 700;
+      }
+
+      .hero-image img {
+        width: 100%;
+        border-radius: 32px;
+        box-shadow: var(--shadow-soft);
+        animation: float 6s ease-in-out infinite;
+        background: white;
+        padding: 10px;
+      }
+
+      /* --- Features --- */
+      .section-title {
+        text-align: center;
+        margin-bottom: 60px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .section-title h2 {
+        font-size: 42px;
+        margin-bottom: 16px;
+      }
+
+      .features {
+        padding: 100px 20px;
+        background: var(--bg-surface);
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .feature-card {
+        background: var(--bg-card);
+        padding: 40px;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-card);
+        transition: transform 0.3s;
+        border: 1px solid rgba(0,0,0,0.03);
+      }
+
+      .feature-card:hover {
+        transform: translateY(-8px);
+      }
+
+      .feature-icon {
+        width: 60px;
+        height: 60px;
+        background: #e0e7ff;
+        color: var(--primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        margin-bottom: 24px;
+      }
+
+      /* --- How It Works --- */
+      .how-it-works {
+        padding: 100px 20px;
+        background: white;
+      }
+
+      .steps-wrapper {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        max-width: 1200px;
+        margin: 0 auto;
+        flex-wrap: wrap;
+      }
+
+      .step-card {
+        flex: 1;
+        min-width: 280px;
+        text-align: center;
+        padding: 20px;
+      }
+
+      .step-img-container {
+        height: 200px;
+        background: var(--bg-surface);
+        border-radius: var(--radius-lg);
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 60px;
+        color: #cbd5e1;
+      }
+
+      .step-number {
+        display: inline-block;
+        background: var(--primary);
+        color: white;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        line-height: 32px;
+        font-weight: 700;
+        margin-bottom: 16px;
+      }
+
+      /* --- Screenshots (Updated Carousel) --- */
+      .screenshots {
+        padding: 100px 20px;
+        background: #fdf2f8;
+      }
+
+      .showcase-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 40px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .phone-frame {
+        background: #111;
+        border-radius: 40px;
+        padding: 10px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        max-width: 300px;
+        margin: 0 auto;
+        aspect-ratio: 9/19;
+      }
+
+      .carousel-container {
+        background: white;
+        border-radius: 30px;
+        height: 100%;
+        overflow: hidden;
+        position: relative;
+      }
+      
+      .carousel-wrapper {
+        height: 100%;
+        display: flex;
+        transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        width: 100%; /* Important */
+      }
+
+      .carousel-slide {
+        min-width: 100%;
+        height: 100%;
+        flex-shrink: 0; /* Important */
+      }
+      
+      .carousel-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      
+      /* Dots */
+      .dots-container {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 20px;
+      }
+      .dot {
+        width: 10px;
+        height: 10px;
+        background: #cbd5e1;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      .dot.active {
+        background: var(--primary);
+        transform: scale(1.2);
+      }
+
+      /* --- About & Contact --- */
+      .about {
+        padding: 100px 20px;
+        background: white;
+        text-align: center;
+      }
+      
+      .about-content {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .contact {
+        padding: 80px 20px;
+        background: var(--bg-surface);
+      }
+
+      .contact-container {
+        max-width: 600px;
+        margin: 0 auto;
+        background: white;
+        padding: 40px;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-soft);
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: var(--text-heading);
+      }
+
+      .form-group input, .form-group textarea {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #e2e8f0;
+        border-radius: var(--radius-sm);
+        font-family: inherit;
+        font-size: 16px;
+        transition: border-color 0.2s;
+        background: #f8fafc;
+      }
+
+      .form-group input:focus, .form-group textarea:focus {
+        outline: none;
+        border-color: var(--primary);
+        background: white;
+      }
+
+      .submit-btn {
+        width: 100%;
+        padding: 16px;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: var(--radius-sm);
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+
+      .submit-btn:hover {
+        background: var(--primary-hover);
+      }
+
+      /* --- Footer --- */
+      footer {
+        padding: 60px 20px 30px;
+        background: white;
+        border-top: 1px solid #f1f5f9;
+        text-align: center;
+      }
+      
+      .footer-links {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+      }
+      
+      .footer-links a {
+        color: var(--text-heading);
+        text-decoration: none;
+        font-weight: 500;
+      }
+      
+      .copyright {
+        color: #94a3b8;
+        font-size: 14px;
+      }
+
+      /* Mobile Menu */
+      .mobile-menu-btn {
+        display: none;
+        cursor: pointer;
+        flex-direction: column;
+        gap: 5px;
+      }
+      .mobile-menu-btn span {
+        width: 25px;
+        height: 3px;
+        background: #1e293b;
+        border-radius: 3px;
+      }
+
+      @media (max-width: 768px) {
+        .hero-container {
+          grid-template-columns: 1fr;
+          text-align: center;
+        }
+        .hero-text {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-        }
-
-        .logo-section {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo-section img {
-            height: 45px;
-            width: auto;
-        }
-
-        .logo-section h1 {
-            font-size: 22px;
-            font-weight: 700;
-            color: #1E293B;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 30px;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: #64748B;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: #3B82F6;
-        }
-
-        .mobile-menu {
-            display: none;
             flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-            z-index: 1001;
+            align-items: center;
         }
-
-        .mobile-menu span {
-            width: 25px;
-            height: 3px;
-            background: #1E293B;
-            transition: all 0.3s;
+        .hero-image {
+          margin-top: 40px;
         }
-
-        .mobile-menu.active span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
+        .nav-links {
+          display: none;
         }
-
-        .mobile-menu.active span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .mobile-menu.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(7px, -6px);
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 140px 20px 80px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
+        .nav-links.active {
+            display: flex;
             position: absolute;
-            top: 0;
+            top: 100%;
             left: 0;
             right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h100v100H0z" fill="none"/><path d="M50 10a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm40 40a5 5 0 1 0 0-10 5 5 0 0 0 0 10zM10 90a5 5 0 1 0 0-10 5 5 0 0 0 0 10z" fill="rgba(255,255,255,0.1)"/></svg>');
-            opacity: 0.3;
-        }
-
-        .hero-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero h2 {
-            font-size: 48px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            line-height: 1.2;
-        }
-
-        .hero p {
-            font-size: 20px;
-            margin-bottom: 30px;
-            opacity: 0.95;
-        }
-
-        .download-buttons {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 30px;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 15px 30px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-            font-size: 16px;
-        }
-
-        .btn-primary {
             background: white;
-            color: #667eea;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 2px solid white;
-        }
-
-        .btn-secondary:hover {
-            background: white;
-            color: #667eea;
-        }
-
-        .hero-image {
-            margin-top: 50px;
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .hero-image img {
-            width: 100%;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Features Section */
-        .features {
-            padding: 80px 20px;
-            background: #F8F9FA;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .section-title h2 {
-            font-size: 42px;
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: #1E293B;
-        }
-
-        .section-title p {
-            font-size: 18px;
-            color: #64748B;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .features-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .feature-card {
-            background: white;
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
-            transition: all 0.3s;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-        }
-
-        .feature-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            margin-bottom: 20px;
-        }
-
-        .feature-card h3 {
-            font-size: 22px;
-            margin-bottom: 12px;
-            color: #1E293B;
-        }
-
-        .feature-card p {
-            color: #64748B;
-            line-height: 1.7;
-        }
-
-        /* How It Works */
-        .how-it-works {
-            padding: 80px 20px;
-            background: white;
-        }
-
-        .steps {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-top: 50px;
-        }
-
-        .step {
-            text-align: center;
-            position: relative;
-        }
-
-        .step-number {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            font-weight: 700;
-            margin: 0 auto 20px;
-        }
-
-        .step h3 {
-            font-size: 20px;
-            margin-bottom: 12px;
-            color: #1E293B;
-        }
-
-        .step p {
-            color: #64748B;
-        }
-
-        /* Screenshots */
-        .screenshots {
-            padding: 80px 20px;
-            background: #F8F9FA;
-        }
-
-        .screenshots-grid {
-            max-width: 1200px;
-            margin: 50px auto 0;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .feature-showcase {
-            margin-bottom: 60px;
-        }
-
-        .feature-showcase:last-child {
-            margin-bottom: 0;
-        }
-
-        .feature-showcase h3 {
-            font-size: 32px;
-            color: #1E293B;
-            margin-bottom: 30px;
-            text-align: center;
-            font-weight: 700;
-        }
-
-        .carousel-container {
-            position: relative;
-            max-width: 400px;
-            margin: 0 auto;
-            overflow: hidden;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-        }
-
-        .carousel-wrapper {
-            display: flex;
-            transition: transform 0.5s ease-in-out;
-        }
-
-        .carousel-slide {
-            min-width: 100%;
-            position: relative;
-        }
-
-        .carousel-slide img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        .carousel-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.9);
-            border: none;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: #667eea;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s;
-            z-index: 10;
-        }
-
-        .carousel-btn:hover {
-            background: white;
-            transform: translateY(-50%) scale(1.1);
-        }
-
-        .carousel-btn.prev {
-            left: 20px;
-        }
-
-        .carousel-btn.next {
-            right: 20px;
-        }
-
-        .carousel-dots {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .carousel-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #CBD5E1;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .carousel-dot.active {
-            background: #667eea;
-            width: 30px;
-            border-radius: 6px;
-        }
-
-        /* About Us */
-        .about {
-            padding: 80px 20px;
-            background: white;
-        }
-
-        .about-content {
-            max-width: 900px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .about-content h2 {
-            font-size: 42px;
-            margin-bottom: 30px;
-            color: #1E293B;
-        }
-
-        .about-content p {
-            font-size: 18px;
-            color: #64748B;
-            line-height: 1.8;
-            margin-bottom: 20px;
-        }
-
-        .team-values {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
-        }
-
-        .value-card {
-            background: #F8F9FA;
-            padding: 30px;
-            border-radius: 12px;
-            text-align: center;
-        }
-
-        .value-icon {
-            font-size: 40px;
-            margin-bottom: 15px;
-        }
-
-        .value-card h3 {
-            font-size: 20px;
-            margin-bottom: 10px;
-            color: #1E293B;
-        }
-
-        .value-card p {
-            color: #64748B;
-            font-size: 16px;
-        }
-
-        /* Contact Section */
-        .contact {
-            padding: 80px 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .contact-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .contact h2 {
-            font-size: 42px;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .contact p {
-            text-align: center;
-            font-size: 18px;
-            margin-bottom: 40px;
-            opacity: 0.95;
-        }
-
-        .contact-form {
-            background: white;
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #1E293B;
-            font-weight: 500;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #E2E8F0;
-            border-radius: 8px;
-            font-size: 16px;
-            font-family: inherit;
-            transition: border-color 0.3s;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 150px;
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-        }
-
-        .contact-info {
-            text-align: center;
-            margin-top: 40px;
-            padding-top: 40px;
-            border-top: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .contact-info a {
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-            font-weight: 500;
-        }
-
-        .contact-info a:hover {
-            text-decoration: underline;
-        }
-
-        .checkbox-container {
-            margin-bottom: 20px;
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-        }
-
-        .checkbox-container input[type="checkbox"] {
-            margin-top: 4px;
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
-
-        .checkbox-container label {
-            color: #1E293B;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-
-        .legal-links a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .legal-links a:hover {
-            text-decoration: underline;
-        }
-
-        /* Footer */
-        footer {
-            background: #1E293B;
-            color: white;
-            padding: 40px 20px 20px;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-bottom: 30px;
-        }
-
-        .footer-section h3 {
-            font-size: 18px;
-            margin-bottom: 15px;
-        }
-
-        .footer-section p,
-        .footer-section a {
-            color: #94A3B8;
-            text-decoration: none;
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        .footer-section a:hover {
-            color: white;
-        }
-
-        .footer-bottom {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid #334155;
-            color: #94A3B8;
-        }
-
-        .footer-bottom a {
-            color: #94A3B8;
-            text-decoration: none;
-        }
-
-        .footer-bottom a:hover {
-            color: white;
-            text-decoration: underline;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .nav-links.mobile-active {
-                display: flex;
-                flex-direction: column;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: rgba(255, 255, 255, 0.98);
-                backdrop-filter: blur(10px);
-                padding: 20px;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-                gap: 15px;
-            }
-
-            .mobile-menu {
-                display: flex;
-            }
-
-            .hero h2 {
-                font-size: 32px;
-            }
-
-            .hero p {
-                font-size: 18px;
-            }
-
-            .section-title h2 {
-                font-size: 32px;
-            }
-
-            .download-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .btn {
-                width: 100%;
-                max-width: 300px;
-                justify-content: center;
-            }
-        }
+            flex-direction: column;
+            padding: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border-radius: var(--radius-lg);
+            margin-top: 10px;
+        }
+        .mobile-menu-btn {
+          display: flex;
+        }
+      }
     </style>
-</head>
+  </head>
+  <body>
 
-<body>
-    <!-- Navigation -->
-    <nav id="navbar">
-        <div class="nav-content">
-            <div class="logo-section">
-                <img src="images/ardrawlogo.png" alt="AR Drawing Sketchflow Logo">
-                <h1>Sketchflow</h1>
-            </div>
-            <div class="nav-links">
-                <a href="#home">Home</a>
-                <a href="#features">Features</a>
-                <a href="#how-it-works">How It Works</a>
-                <a href="#about">About</a>
-                <a href="#contact">Contact</a>
-            </div>
-            <div class="mobile-menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
+    <nav>
+      <div class="logo-section">
+        <img src="images/ardrawlogo.png" alt="Logo" />
+        <h1>Sketchflow</h1>
+      </div>
+      <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="mobile-menu-btn" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </div>
     </nav>
 
-    <!-- Hero Section -->
     <section id="home" class="hero">
-        <div class="hero-content">
-            <h2>Learn to Draw Like a Pro<br>with AR Technology</h2>
-            <p>Transform your device into a powerful drawing teacher. Trace templates, use grid systems, and capture
-                your artistic journey.</p>
-            <div class="download-buttons">
-                <a href="#" class="btn btn-primary">
-                    <span>📱</span>
-                    Download on Play Store
-                </a>
-                <a href="#features" class="btn btn-secondary">
-                    <span>✨</span>
-                    Explore Features
-                </a>
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      
+      <div class="hero-container">
+        <div class="hero-text animate-on-scroll">
+          <h2>Draw Anything.<br>Anywhere. 🎨</h2>
+          <p>The easiest way to learn drawing using AR. No complicated tools, just you and your creativity.</p>
+          
+          <a href="https://play.google.com/store/apps/details?id=com.horizon.ardrawingsketchflow" class="big-play-btn" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Play Store">
+            <div class="btn-content">
+              <span>GET IT ON</span>
+              <span>Google Play</span>
             </div>
-            <div class="hero-image">
-                <img src="images/banner.png" alt="AR Drawing Sketchflow App Preview">
-            </div>
+          </a>
+          
         </div>
+        <div class="hero-image animate-on-scroll">
+          <img src="images/banner.png" alt="App Preview">
+        </div>
+      </div>
     </section>
 
-    <!-- Features Section -->
-    <section id="features" class="features">
-        <div class="section-title">
-            <h2>Powerful Features for Every Artist</h2>
-            <p>Everything you need to start your drawing journey, from beginner to advanced.</p>
+    <section id="features" class="features animate-on-scroll">
+      <div class="section-title">
+        <h2>Super Simple Features ✨</h2>
+        <p>Everything you need, nothing you don't.</p>
+      </div>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">📸</div>
+          <h3>AR Tracing</h3>
+          <p>Point your camera, pick a picture, and trace it on paper. It's like magic.</p>
         </div>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">📸</div>
-                <h3>Camera Overlay Tracing</h3>
-                <p>Place any image from our template library or your gallery over your camera view. Trace directly on
-                    paper while recording videos and capturing your artwork progress.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📱</div>
-                <h3>Screen Projection Mode</h3>
-                <p>Place your drawing paper above your device screen. The image displays below, allowing you to trace
-                    naturally with perfect lighting and clarity.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🎯</div>
-                <h3>Grid Drawing System</h3>
-                <p>Master proportions and accuracy with our intelligent grid system. Perfect for learning traditional
-                    drawing techniques and improving your skills.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🎨</div>
-                <h3>Line Art Converter</h3>
-                <p>Transform any photo from your gallery into clean line drawings. Makes complex images easy to trace
-                    and learn from.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📚</div>
-                <h3>Template Library</h3>
-                <p>Access hundreds of professionally curated templates across various categories. Favorite your
-                    preferred templates for quick access.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">💾</div>
-                <h3>Works Gallery</h3>
-                <p>Save all your creations in one place. Record time-lapse videos, capture finished works, and share
-                    your progress with friends and family.</p>
-            </div>
+        <div class="feature-card">
+          <div class="feature-icon">💡</div>
+          <h3>Screen Projector</h3>
+          <p>Put paper on your screen and trace directly. Perfect for quick sketches.</p>
         </div>
+        <div class="feature-card">
+          <div class="feature-icon">📐</div>
+          <h3>Easy Grids</h3>
+          <p>Learn proportions easily with our grid system. Great for beginners.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🖼️</div>
+          <h3>Templates</h3>
+          <p>Tons of cool anime, animals, and cartoon templates ready to draw.</p>
+        </div>
+      </div>
     </section>
 
-    <!-- How It Works -->
-    <section id="how-it-works" class="how-it-works">
-        <div class="section-title">
-            <h2>How It Works</h2>
-            <p>Start drawing in just three simple steps</p>
+    <section id="how-it-works" class="how-it-works animate-on-scroll">
+      <div class="section-title">
+        <h2>How It Works 🚀</h2>
+      </div>
+      
+      <div class="steps-wrapper">
+        <div class="step-card">
+          <div class="step-img-container">📱</div>
+          <span class="step-number">1</span>
+          <h3>Open App</h3>
+          <p>Select your favorite mode: AR or Screen Trace.</p>
         </div>
-        <div class="steps">
-            <div class="step">
-                <div class="step-number">1</div>
-                <h3>Choose Your Method</h3>
-                <p>Select from camera overlay, screen projection, or grid drawing mode based on your preference.</p>
-            </div>
-            <div class="step">
-                <div class="step-number">2</div>
-                <h3>Pick an Image</h3>
-                <p>Browse our template library or upload your own photo. Use the line art converter for easier tracing.
-                </p>
-            </div>
-            <div class="step">
-                <div class="step-number">3</div>
-                <h3>Start Creating</h3>
-                <p>Follow the guide, trace at your own pace, and save your masterpiece to your works gallery.</p>
-            </div>
+        <div class="step-card">
+          <div class="step-img-container">🖼️</div>
+          <span class="step-number">2</span>
+          <h3>Pick Image</h3>
+          <p>Choose from our library or upload your own.</p>
         </div>
+        <div class="step-card">
+          <div class="step-img-container">✏️</div>
+          <span class="step-number">3</span>
+          <h3>Start Drawing</h3>
+          <p>Secure your phone and start tracing lines!</p>
+        </div>
+      </div>
     </section>
 
-    <!-- Screenshots -->
-    <section class="screenshots">
-        <div class="section-title">
-            <h2>See It In Action</h2>
-            <p>Explore our powerful features with real app screenshots</p>
-        </div>
+    <section class="screenshots animate-on-scroll">
+      <div class="section-title">
+        <h2>Looks Good, Right? 😍</h2>
+      </div>
 
-        <div style="max-width: 1200px; margin: 0 auto;">
-            <!-- AR Drawing Feature -->
-            <div class="feature-showcase">
-                <h3>📸 AR Drawing</h3>
-                <div class="carousel-container" data-carousel="ar-drawing">
+      <div class="showcase-grid">
+        <div style="text-align:center;">
+            <h3 style="margin-bottom:20px;">AR Mode</h3>
+            <div class="phone-frame">
+                <div class="carousel-container" id="c1">
                     <div class="carousel-wrapper">
-                        <div class="carousel-slide">
-                            <img src="images/arguide1.png" alt="AR Drawing Screenshot 1">
-                        </div>
-                        <div class="carousel-slide">
-                            <img src="images/arguide2.png" alt="AR Drawing Screenshot 2">
-                        </div>
-                        <div class="carousel-slide">
-                            <img src="images/arguide3.png" alt="AR Drawing Screenshot 3">
-                        </div>
-                        <div class="carousel-slide">
-                            <img src="images/arguide4.png" alt="AR Drawing Screenshot 4">
-                        </div>
-                        <div class="carousel-slide">
-                            <img src="images/arguide5.png" alt="AR Drawing Screenshot 4">
-                        </div>
+                        <div class="carousel-slide"><img src="images/arguide1.png"></div>
+                        <div class="carousel-slide"><img src="images/arguide2.png"></div>
+                        <div class="carousel-slide"><img src="images/arguide3.png"></div>
                     </div>
-                    <button class="carousel-btn prev" onclick="moveCarousel('ar-drawing', -1)">‹</button>
-                    <button class="carousel-btn next" onclick="moveCarousel('ar-drawing', 1)">›</button>
-                </div>
-                <div class="carousel-dots" data-dots="ar-drawing">
-                    <span class="carousel-dot active" onclick="goToSlide('ar-drawing', 0)"></span>
-                    <span class="carousel-dot" onclick="goToSlide('ar-drawing', 1)"></span>
-                    <span class="carousel-dot" onclick="goToSlide('ar-drawing', 2)"></span>
-                    <span class="carousel-dot" onclick="goToSlide('ar-drawing', 3)"></span>
-                    <span class="carousel-dot" onclick="goToSlide('ar-drawing', 4)"></span>
                 </div>
             </div>
+            <div class="dots-container" id="d1">
+                <div class="dot active" onclick="setSlideManual('c1', 0)"></div>
+                <div class="dot" onclick="setSlideManual('c1', 1)"></div>
+                <div class="dot" onclick="setSlideManual('c1', 2)"></div>
+            </div>
+        </div>
 
-            <!-- Screen Projection Feature -->
-            <div class="feature-showcase">
-                <h3>📱 Screen Projection</h3>
-                <div class="carousel-container" data-carousel="screen-projection">
+        <div style="text-align:center;">
+            <h3 style="margin-bottom:20px;">Screen Mode</h3>
+            <div class="phone-frame">
+                <div class="carousel-container" id="c2">
                     <div class="carousel-wrapper">
-                        <div class="carousel-slide">
-                            <img src="images/screenguide1.png" alt="Screen Projection Screenshot 1">
-                        </div>
-                        <div class="carousel-slide">
-                            <img src="images/screenguide2.png" alt="Screen Projection Screenshot 2">
-                        </div>
-                        <div class="carousel-slide">
-                            <img src="images/screenguide3.png" alt="Screen Projection Screenshot 3">
-                        </div>
-                        <div class="carousel-slide">
-                            <img src="images/screenguide4.png" alt="Screen Projection Screenshot 4">
-                        </div>
+                        <div class="carousel-slide"><img src="images/screenguide1.png"></div>
+                        <div class="carousel-slide"><img src="images/screenguide2.png"></div>
+                        <div class="carousel-slide"><img src="images/screenguide3.png"></div>
                     </div>
-                    <button class="carousel-btn prev" onclick="moveCarousel('screen-projection', -1)">‹</button>
-                    <button class="carousel-btn next" onclick="moveCarousel('screen-projection', 1)">›</button>
-                </div>
-                <div class="carousel-dots" data-dots="screen-projection">
-                    <span class="carousel-dot active" onclick="goToSlide('screen-projection', 0)"></span>
-                    <span class="carousel-dot" onclick="goToSlide('screen-projection', 1)"></span>
-                    <span class="carousel-dot" onclick="goToSlide('screen-projection', 2)"></span>
-                    <span class="carousel-dot" onclick="goToSlide('screen-projection', 3)"></span>
                 </div>
             </div>
+            <div class="dots-container" id="d2">
+                <div class="dot active" onclick="setSlideManual('c2', 0)"></div>
+                <div class="dot" onclick="setSlideManual('c2', 1)"></div>
+                <div class="dot" onclick="setSlideManual('c2', 2)"></div>
+            </div>
+        </div>
 
-            <!-- Grid Draw Feature -->
-            <div class="feature-showcase">
-                <h3>🎯 Grid Draw</h3>
-                <div class="carousel-container" data-carousel="grid-draw">
+        <div style="text-align:center;">
+            <h3 style="margin-bottom:20px;">Grid Mode</h3>
+            <div class="phone-frame">
+                <div class="carousel-container" id="c3">
                     <div class="carousel-wrapper">
-                        <div class="carousel-slide">
-                            <img src="images/gridguide1.png" alt="Grid Draw Screenshot 1">
-                        </div>
-                        <div class="carousel-slide">
-                            <img src="images/gridguide2.png" alt="Grid Draw Screenshot 2">
-                        </div>
-                        <div class="carousel-slide">
-                            <img src="images/gridguide3.png" alt="Grid Draw Screenshot 3">
-                        </div>
-                        <div class="carousel-slide">
-                            <img src="images/gridguide4.png" alt="Grid Draw Screenshot 4">
-                        </div>
+                        <div class="carousel-slide"><img src="images/gridguide1.png"></div>
+                        <div class="carousel-slide"><img src="images/gridguide2.png"></div>
+                        <div class="carousel-slide"><img src="images/gridguide3.png"></div>
                     </div>
-                    <button class="carousel-btn prev" onclick="moveCarousel('grid-draw', -1)">‹</button>
-                    <button class="carousel-btn next" onclick="moveCarousel('grid-draw', 1)">›</button>
-                </div>
-                <div class="carousel-dots" data-dots="grid-draw">
-                    <span class="carousel-dot active" onclick="goToSlide('grid-draw', 0)"></span>
-                    <span class="carousel-dot" onclick="goToSlide('grid-draw', 1)"></span>
-                    <span class="carousel-dot" onclick="goToSlide('grid-draw', 2)"></span>
-                    <span class="carousel-dot" onclick="goToSlide('grid-draw', 3)"></span>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- About Us -->
-    <section id="about" class="about">
-        <div class="about-content">
-            <h2>About Us</h2>
-            <p>We're two passionate indie developers who believe that learning to draw should be accessible, enjoyable,
-                and distraction-free. We created AR Drawing Sketchflow after experiencing the frustration of existing
-                apps flooded with intrusive ads and complicated interfaces.</p>
-            <p>Our mission is simple: provide a powerful, user-friendly drawing tool that puts creativity first. We
-                designed this app especially for children and beginners who want to learn drawing without interruptions,
-                but it's robust enough for experienced artists too.</p>
-            <p>Every feature in AR Drawing Sketchflow is crafted with care, focusing on what truly matters—helping you
-                create and learn. We keep ads minimal and non-intrusive, ensuring your drawing sessions flow naturally.
-            </p>
-
-            <div class="team-values">
-                <div class="value-card">
-                    <div class="value-icon">🎯</div>
-                    <h3>User-First Design</h3>
-                    <p>Every decision prioritizes your creative experience</p>
-                </div>
-                <div class="value-card">
-                    <div class="value-icon">🚫</div>
-                    <h3>Minimal Ads</h3>
-                    <p>No interruptions during your drawing sessions</p>
-                </div>
-                <div class="value-card">
-                    <div class="value-icon">❤️</div>
-                    <h3>Made with Love</h3>
-                    <p>Built by artists, for artists of all skill levels</p>
-                </div>
+            <div class="dots-container" id="d3">
+                <div class="dot active" onclick="setSlideManual('c3', 0)"></div>
+                <div class="dot" onclick="setSlideManual('c3', 1)"></div>
+                <div class="dot" onclick="setSlideManual('c3', 2)"></div>
             </div>
         </div>
+      </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="contact">
-        <div class="contact-container">
-            <h2>Get In Touch</h2>
-            <p>Have questions, suggestions, or just want to say hi? We'd love to hear from you!</p>
+    <section id="about" class="about animate-on-scroll">
+      <div class="about-content">
+        <h2>Who Are We? 👋</h2>
+        <p style="margin-top: 20px; font-size: 18px;">
+            Just two indie devs who hated how complex other drawing apps were. 
+            We built Sketchflow to be clean, simple, and actually helpful. 
+            No clutter, just art.
+        </p>
+      </div>
+    </section>
 
-            <form class="contact-form" action="https://formspree.io/f/meovgwwe" method="POST">
-                <!-- Formspree Configuration -->
-                <input type="hidden" name="_subject" value="New Contact Form Submission - AR Drawing Sketchflow">
-
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="subject">Subject</label>
-                    <input type="text" id="subject" name="subject" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="message">Message</label>
-                    <textarea id="message" name="message" required></textarea>
-                </div>
-
-                <div class="checkbox-container">
-                    <input type="checkbox" id="consent" name="consent" required>
-                    <label for="consent">
-                        I agree to the
-                        <span class="legal-links">
-                            <a href="privacy-policy.html" target="_blank">Privacy Policy</a>
-                        </span>
-                        and
-                        <span class="legal-links">
-                            <a href="terms-conditions.html" target="_blank">Terms & Conditions</a>
-                        </span>
-                    </label>
-                </div>
-
-                <button type="submit" class="submit-btn">Send Message</button>
-            </form>
-
-            <div class="contact-info">
-                <p>Or email us directly at:</p>
-                <a href="mailto:ardrawingsketchflow@gmail.com">ardrawingsketchflow@gmail.com</a>
+    <section id="contact" class="contact animate-on-scroll">
+      <div class="section-title">
+        <h2>Say Hello! 💌</h2>
+      </div>
+      <div class="contact-container">
+        <form action="https://formspree.io/f/meovgwwe" method="POST">
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" name="name" required placeholder="John Doe">
             </div>
-        </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" name="email" required placeholder="john@example.com">
+            </div>
+            <div class="form-group">
+                <label>Message</label>
+                <textarea name="message" rows="5" required placeholder="I love this app!"></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Send Message</button>
+        </form>
+      </div>
     </section>
 
-    <!-- Footer -->
     <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>AR Drawing Sketchflow</h3>
-                <p>Learn to draw with AR technology. Made by indie developers who care about your creative journey.</p>
-            </div>
-            <div class="footer-section">
-                <h3>Quick Links</h3>
-                <a href="#home">Home</a>
-                <a href="#features">Features</a>
-                <a href="#about">About Us</a>
-                <a href="#contact">Contact</a>
-            </div>
-            <div class="footer-section">
-                <h3>Legal</h3>
-                <a href="privacy-policy.html">Privacy Policy</a>
-                <a href="terms-conditions.html">Terms & Conditions</a>
-            </div>
-            <div class="footer-section">
-                <h3>Connect</h3>
-                <a href="mailto:ardrawingsketchflow@gmail.com">Email Us</a>
-                <a href="#">Play Store</a>
-            </div>
+        <div class="footer-links">
+            <a href="#home">Home</a>
+            <a href="#features">Features</a>
+            <a href="privacy-policy.html">Privacy</a>
+            <a href="terms-conditions.html">Terms</a>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 AR Drawing Sketchflow. All rights reserved. |
-                <a href="privacy-policy.html">Privacy Policy</a> |
-                <a href="terms-conditions.html">Terms & Conditions</a>
-            </p>
-        </div>
+        <p class="copyright">© 2024 Sketchflow. Made with ❤️.</p>
     </footer>
 
     <script>
-        // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
+      // Toggle Mobile Menu
+      function toggleMenu() {
+        document.querySelector('.nav-links').classList.toggle('active');
+      }
 
-        // Navbar scroll effect
-        window.addEventListener('scroll', function () {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
+      // Navbar Scroll Effect
+      window.addEventListener("scroll", () => {
+        const nav = document.querySelector("nav");
+        if (window.scrollY > 50) nav.classList.add("scrolled");
+        else nav.classList.remove("scrolled");
+      });
+
+      // --- FIXED AUTO CAROUSEL LOGIC ---
+      
+      const carouselData = {
+        'c1': { index: 0, count: 3 },
+        'c2': { index: 0, count: 3 },
+        'c3': { index: 0, count: 3 }
+      };
+
+      let autoPlayInterval;
+
+      // Core function to move slide
+      function setSlide(carouselId, index) {
+        if (!carouselData[carouselId]) return;
+
+        // Update State
+        carouselData[carouselId].index = index;
+
+        // Move Image Wrapper
+        const container = document.getElementById(carouselId);
+        if(container) {
+            const wrapper = container.querySelector('.carousel-wrapper');
+            wrapper.style.transform = `translateX(-${index * 100}%)`;
+        }
+
+        // Update Dots
+        const dotsId = carouselId.replace('c', 'd'); 
+        const dotsContainer = document.getElementById(dotsId);
+        if(dotsContainer) {
+            const dots = dotsContainer.querySelectorAll('.dot');
+            dots.forEach((d, i) => {
+                if(i === index) d.classList.add('active');
+                else d.classList.remove('active');
+            });
+        }
+      }
+
+      // Manual Click Handler
+      function setSlideManual(carouselId, index) {
+        setSlide(carouselId, index);
+        // Reset timer when user interacts so it doesn't jump instantly
+        clearInterval(autoPlayInterval);
+        startAutoPlay();
+      }
+
+      // Auto Advance Function
+      function nextSlide(carouselId) {
+        const current = carouselData[carouselId].index;
+        const total = carouselData[carouselId].count;
+        let next = current + 1;
+        if (next >= total) {
+            next = 0;
+        }
+        setSlide(carouselId, next);
+      }
+
+      // Start Loop
+      function startAutoPlay() {
+        autoPlayInterval = setInterval(() => {
+            Object.keys(carouselData).forEach(id => nextSlide(id));
+        }, 3000); 
+      }
+
+      // Initialize on Load
+      document.addEventListener('DOMContentLoaded', () => {
+        startAutoPlay();
+      });
+
+      // --- SCROLL ANIMATION ---
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if(entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
             }
         });
-
-        // Check if form was submitted
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('submitted') === 'true') {
-            alert('Thank you! Your message has been sent successfully. We\'ll get back to you soon!');
-            // Clean URL
-            window.history.replaceState({}, document.title, window.location.pathname);
-        }
-
-        // Mobile menu toggle
-        const mobileMenu = document.querySelector('.mobile-menu');
-        const navLinks = document.querySelector('.nav-links');
-
-        mobileMenu.addEventListener('click', function () {
-            this.classList.toggle('active');
-            navLinks.classList.toggle('mobile-active');
-        });
-
-        // Close mobile menu when clicking on a link
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', function () {
-                mobileMenu.classList.remove('active');
-                navLinks.classList.remove('mobile-active');
-            });
-        });
-
-        // Carousel functionality
-        const carouselState = {
-            'ar-drawing': 0,
-            'screen-projection': 0,
-            'grid-draw': 0
-        };
-
-        function moveCarousel(carouselId, direction) {
-            const container = document.querySelector(`[data-carousel="${carouselId}"]`);
-            const wrapper = container.querySelector('.carousel-wrapper');
-            const slides = wrapper.querySelectorAll('.carousel-slide');
-            const dots = document.querySelectorAll(`[data-dots="${carouselId}"] .carousel-dot`);
-
-            carouselState[carouselId] += direction;
-
-            // Loop around
-            if (carouselState[carouselId] < 0) {
-                carouselState[carouselId] = slides.length - 1;
-            } else if (carouselState[carouselId] >= slides.length) {
-                carouselState[carouselId] = 0;
-            }
-
-            // Move carousel
-            wrapper.style.transform = `translateX(-${carouselState[carouselId] * 100}%)`;
-
-            // Update dots
-            dots.forEach((dot, index) => {
-                dot.classList.toggle('active', index === carouselState[carouselId]);
-            });
-        }
-
-        function goToSlide(carouselId, slideIndex) {
-            const container = document.querySelector(`[data-carousel="${carouselId}"]`);
-            const wrapper = container.querySelector('.carousel-wrapper');
-            const dots = document.querySelectorAll(`[data-dots="${carouselId}"] .carousel-dot`);
-
-            carouselState[carouselId] = slideIndex;
-
-            // Move carousel
-            wrapper.style.transform = `translateX(-${carouselState[carouselId] * 100}%)`;
-
-            // Update dots
-            dots.forEach((dot, index) => {
-                dot.classList.toggle('active', index === carouselState[carouselId]);
-            });
-        }
-
-        // Auto-play carousels (optional)
-        setInterval(() => {
-            Object.keys(carouselState).forEach(carouselId => {
-                moveCarousel(carouselId, 1);
-            });
-        }, 5000); // Change slide every 5 seconds
+      });
+      document.querySelectorAll('.animate-on-scroll').forEach((el) => observer.observe(el));
     </script>
-</body>
-
+  </body>
 </html>
